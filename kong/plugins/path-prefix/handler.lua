@@ -58,7 +58,13 @@ function plugin:access(plugin_conf)
 
     local full_path = kong.request.get_path()
     local replace_match = escape_hyphen()
-    local path_without_prefix = full_path:gsub(replace_match, "", 1)
+    -- local path_without_prefix = full_path:gsub(replace_match, "", 1)
+    -- support multiple prefix @binhbt
+    local path_without_prefix = full_path
+    for k in string.gmatch(replace_match, "[^%s]+") do
+       path_without_prefix = path_without_prefix:gsub(k, "", 1)
+    end
+    -- print(path_without_prefix)
 
     if path_without_prefix == "" and service_path == "" then
         path_without_prefix = "/"

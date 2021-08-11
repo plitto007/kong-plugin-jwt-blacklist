@@ -1,4 +1,7 @@
 # kong-plugin-path-prefix
+Build: luarocks make --pack-binary-rock  
+# Support multiple prefix  
+config.path_prefix = prefix1 prefix2 prefix2  
 
 A Kong plugin that rewrites the upstream request path. This can be useful if you have routes associated to a single service that all share the same path prefix.
 

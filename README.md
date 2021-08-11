@@ -1,9 +1,9 @@
-# kong-plugin-path-prefix
+## kong-plugin-path-prefix
 Build: luarocks make --pack-binary-rock  
-# Support multiple prefix  
-config.path_prefix = prefix1 prefix2 prefix2  
+## Support multiple prefix  
+config.path_prefix = prefix1 prefix2 prefix3  
 
-# Install for Kong  
+## Install for Kong  DockerFile  
 ENV KONG_PLUGINS bundled, path-prefix  
 RUN USER=root luarocks install https://github.com/binhbt/kong-plugin-path-prefix/raw/master/kong-plugin-path-prefix-0.1.0-1.all.rock  
  

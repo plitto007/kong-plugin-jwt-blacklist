@@ -1,13 +1,16 @@
 local plugin = require("kong.plugins.base_plugin"):extend()
+local conf = kong.ctx.plugin.conf
+local path_prefix = conf.path_prefix
+local should_escape = conf.escape
 
 function plugin:new()
     plugin.super.new(self, "path-prefix")
 end
 
 local function escape_hyphen()
-    local conf = kong.ctx.plugin.conf
-    local path_prefix = conf.path_prefix
-    local should_escape = conf.escape
+    -- local conf = kong.ctx.plugin.conf
+    -- local path_prefix = conf.path_prefix
+    -- local should_escape = conf.escape
 
     if should_escape then
         return string.gsub(path_prefix, "%-", "%%%1")

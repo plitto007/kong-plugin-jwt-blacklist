@@ -17,8 +17,8 @@ local function escape_hyphen(conf)
     return path_prefix
 end
 
-local function get_service_for_plugin()
-    local conf = kong.ctx.plugin.conf
+local function get_service_for_plugin(conf)
+    -- local conf = kong.ctx.plugin.conf
     local service
     local err
 
@@ -44,7 +44,7 @@ function plugin:access(plugin_conf)
     plugin.super.access(self)
     kong.ctx.plugin.conf = plugin_conf
 
-    local service, err = get_service_for_plugin()
+    local service, err = get_service_for_plugin(plugin_conf)
 
     if err then
         kong.log.err("Unable to determine service for plugin " .. err)

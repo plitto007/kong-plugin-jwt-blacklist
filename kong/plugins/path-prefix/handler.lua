@@ -1,16 +1,14 @@
 local plugin = require("kong.plugins.base_plugin"):extend()
-local conf = kong.ctx.plugin.conf
-local path_prefix = conf.path_prefix
-local should_escape = conf.escape
+
 
 function plugin:new()
     plugin.super.new(self, "path-prefix")
 end
 
-local function escape_hyphen()
+local function escape_hyphen(conf)
     -- local conf = kong.ctx.plugin.conf
-    -- local path_prefix = conf.path_prefix
-    -- local should_escape = conf.escape
+    local path_prefix = conf.path_prefix
+    local should_escape = conf.escape
 
     if should_escape then
         return string.gsub(path_prefix, "%-", "%%%1")
@@ -60,7 +58,7 @@ function plugin:access(plugin_conf)
     local service_path = service.path or ""
 
     local full_path = kong.request.get_path()
-    local replace_match = escape_hyphen()
+    local replace_match = escape_hyphen(plugin_conf)
     -- local path_without_prefix = full_path:gsub(replace_match, "", 1)
     -- support multiple prefix @binhbt
     local path_without_prefix = full_path

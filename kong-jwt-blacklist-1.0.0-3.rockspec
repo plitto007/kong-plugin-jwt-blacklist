@@ -14,7 +14,6 @@ description = {
 
 
 dependencies = {
-  "lua ~> 5.1",
   "lua-resty-openidc ~> 1.7.4-1"
 }
 

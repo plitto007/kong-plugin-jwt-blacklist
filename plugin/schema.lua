@@ -3,6 +3,7 @@ local typedefs = require "kong.db.schema.typedefs"
 return {
     name = "kong-jwt-blacklist",
     fields = {
+        { consumer = typedefs.no_consumer },
         { protocols = typedefs.protocols_http },
         { config = {
             type = "record",
@@ -20,9 +21,9 @@ return {
                 { token_prefix = { type = "string", default = "token_" }, },
                 { token_verify = { type = "boolean", required = true, default = true }, },
                 { user_member = { type = "string", default = "keycloak:user:blacklist" }, },
-                { user_prefix = { type = "string" , default = "user_"}, },
+                { user_prefix = { type = "string", default = "user_" }, },
                 { user_verify = { type = "boolean", required = true, default = true }, },
-                { user_claim_name = { type = "string" , default = "sub"}, },
+                { user_claim_name = { type = "string", default = "sub" }, },
                 { run_on_preflight = { type = "boolean", required = true, default = true }, },
                 { uri_param_names = {
                     type = "set",
@@ -39,9 +40,9 @@ return {
                     elements = { type = "string" },
                     default = { "authorization" },
                 }, },
-                { client_id = { type = "string" , required = false}, },
-                { client_secret = { type = "string" , required = false}, },
-                { introspection_endpoint = { type = "string" , required = false}, },
+                { client_id = { type = "string", required = false }, },
+                { client_secret = { type = "string", required = false }, },
+                { introspection_endpoint = { type = "string", required = false }, },
             }
         },
         },

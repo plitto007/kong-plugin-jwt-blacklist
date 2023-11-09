@@ -147,7 +147,15 @@ SADD keycloak:token:blacklist token_test
 Retrieve all token of `keycloak:token:blacklist`
 ```shell
 SMEMBERS keycloak:token:blacklist
+
 ```
+
+Retrieve all user of `keycloak:user:blacklist`
+```shell
+SMEMBERS keycloak:user:blacklist
+
+```
+
 
 Call HTTP request
 ```shell

@@ -187,8 +187,8 @@ local function check_valid_token(conf)
             local ok, err = introspect_token(conf, token)
             return ok, err
         end
-        ---SISMEMBER
-        local verify, q_err = red:sismember(conf.token_member, conf.token_prefix .. token)
+        ---ZScore: for Token, we use Zscore instead of sismember
+        local verify, q_err = red:zscore(conf.token_member, conf.token_prefix .. token)
         if q_err then
             kong.log.err("[jwt-blacklist] Could connect redis", q_err)
             local ok, err = introspect_token(conf, token)

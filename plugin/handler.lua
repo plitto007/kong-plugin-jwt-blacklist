@@ -128,7 +128,6 @@ local function get_redis_connection(conf)
     return red
 end
 
-
 local function get_options(config)
     return {
         client_id = config.client_id,
@@ -138,7 +137,7 @@ local function get_options(config)
 end
 
 local function introspect_token(conf, token)
-    kong.log.info("[jwt-blacklist] Begin introspect token".. token)
+    kong.log.info("[jwt-blacklist] Begin introspect token" .. token)
 
     local option = get_options(conf)
     local res, err = oidc.introspect(option)
@@ -194,14 +193,29 @@ local function check_valid_token(conf)
             local ok, err = introspect_token(conf, token)
             return ok, err
         end
+        kong.log.info("[jwt-blacklist] result " .. type(verify))
+        if type(verify) ~= "string" then
+            --    Not string mean something else (can be token not exist in zset)
 
-        if verify > 0 then
-            kong.log.info("[jwt-blacklist] Token already in blacklist: " .. token)
-            return false, {
-                status = 401,
-                message = "Token has been locked"
-            }
+        else
+            local score = tonumber(verify)
+
+            if score > 0 then
+                kong.log.info("[jwt-blacklist] Token already in blacklist: " .. token)
+                return false, {
+                    status = 401,
+                    message = "Token has been locked"
+                }
+            end
         end
+
+        --if verify > 0 then
+        --    kong.log.info("[jwt-blacklist] Token already in blacklist: " .. token)
+        --    return false, {
+        --        status = 401,
+        --        message = "Token has been locked"
+        --    }
+        --end
     end
 
     -- Validate userId in blacklist
@@ -216,7 +230,7 @@ local function check_valid_token(conf)
         -- Decode token to find out who the consumer is
         local jwt, decode_error = jwt_decoder:new(token)
         if decode_error then
-            return false, { status = 401, message = "Invalid token"}
+            return false, { status = 401, message = "Invalid token" }
         end
 
         local claims = jwt.claims

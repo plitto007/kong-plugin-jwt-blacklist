@@ -44,19 +44,20 @@ function plugin:access(plugin_conf)
     plugin.super.access(self)
     kong.ctx.plugin.conf = plugin_conf
 
-    local service, err = get_service_for_plugin(plugin_conf)
-
-    if err then
-        kong.log.err("Unable to determine service for plugin " .. err)
-        return kong.response.exit(500, "Internal server error")
-    end
+--     local service, err = get_service_for_plugin(plugin_conf)
+--
+--     if err then
+--         kong.log.err("Unable to determine service for plugin " .. err)
+--         return kong.response.exit(500, "Internal server error")
+--     end
 
     -- ideally this plugin wouldn't need to do lookup the service's path,
     -- but the path returned by kong.request.get_path() doesn't include it
     -- and using kong.service.request.set_path will overwrite it (under the hood, get_path and set_path refer to different nginx vars).
     -- more here: https://discuss.konghq.com/t/pdk-path-related-function-relative-to-router-matches-and-service-path/1329
-    local service_path = service.path or ""
+--     local service_path = service.path or ""
 
+    local service_path = "/api/v1" -- Use fix value for preventing access db
     local full_path = kong.request.get_path()
     local replace_match = escape_hyphen(plugin_conf)
     -- local path_without_prefix = full_path:gsub(replace_match, "", 1)
